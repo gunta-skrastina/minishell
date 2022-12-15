@@ -1,7 +1,7 @@
 # _*_ MakeFile _*_
 
 CC = gcc
-CFLAGS = -Wextra -Wall -Werror
+CFLAGS = -Wextra -Wall -Werror -lreadline
 
 LIBFT = libft.a
 NAME = minishell
@@ -18,7 +18,7 @@ $(LIBFT):
 
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(LIBFT) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
 clean:
 	rm -f $(OBJS) 

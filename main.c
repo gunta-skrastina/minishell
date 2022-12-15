@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2022/12/15 13:20:35 by gskrasti         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:30:13 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

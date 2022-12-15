@@ -1,14 +1,17 @@
 # _*_ MakeFile _*_
 
 CC = gcc
+# CFLAGS = -Wextra -Wall -Werror -I $(HOME)/goinfre/.brew/opt/readline/include/ -L $(HOME)/goinfre/.brew/opt/readline/lib/ -lreadline
 CFLAGS = -Wextra -Wall -Werror -lreadline
-
 LIBFT = libft.a
 NAME = minishell
 
 SRCS = main.c
 
 OBJS = $(SRCS:.c=.o)
+
+%.o:	%.c
+	$(CC) -c -Wextra -Wall -Werror -o $@ $^
 
 all: $(LIBFT) $(NAME)
 

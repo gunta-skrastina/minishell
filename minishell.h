@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2022/12/15 13:19:44 by gskrasti         ###   ########.fr       */
+/*   Updated: 2022/12/15 12:44:37 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

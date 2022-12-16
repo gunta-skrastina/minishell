@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2022/12/16 20:13:08 by gskrasti         ###   ########.fr       */
+/*   Created: 2022/12/16 14:35:40 by gskrasti          #+#    #+#             */
+/*   Updated: 2022/12/16 20:11:51 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "libft/libft.h"
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_struct
+int	ft_charcmp(char *str, char c)
 {
-	char	*str;
-}				t_struct;
-
-void	replace(char *str, int i);
-char	*replace_env(char *str, int i, char c);
-int		ft_charcmp(char *str, char c);
-char	*env_exists(char *str);
-char	next_quote(char *str);
-
-#endif
+	int	i;
+	
+	i = 0;
+	while (str[i])
+	{
+		if (c == str[i])
+			return (i);
+		i++;
+	}
+	return (-1);
+}

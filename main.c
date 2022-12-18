@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2022/12/16 20:31:20 by gskrasti         ###   ########.fr       */
+/*   Updated: 2022/12/18 17:31:05 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 int	main(void)
 {
 	char	*str;
-	int		len;
 
-	len = ft_strlen(str);
 	while (42)
 	{
 		str = readline("> ");
-		if (len > 0)
+		if (ft_strlen(str) > 0)
 			add_history(str);
-		replace(str, -1);
+		str = replace(str, -1);
 		printf("%s\n", str);
 	}
 	return (0);

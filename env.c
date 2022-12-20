@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2022/12/20 16:24:22 by gskrasti         ###   ########.fr       */
+/*   Updated: 2022/12/20 16:33:13 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,5 @@ char	*ft_new_str(char *str, int i, int j, char *env)
 	// if (new_env)
 	// 	free(new_env);
 	free(env);
-	printf("%s\n", new_env);
 	return (str);
 }

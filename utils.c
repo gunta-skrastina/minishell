@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2022/12/20 14:57:46 by gskrasti         ###   ########.fr       */
+/*   Created: 2022/12/16 14:35:40 by gskrasti          #+#    #+#             */
+/*   Updated: 2022/12/18 18:21:30 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	ft_charcmp(char *str, char c)
 {
-	char	*str;
+	int	i;
 
-	while (42)
+	i = 0;
+	while (str[i])
 	{
-		str = readline("> ");
-		if (ft_strlen(str) > 0)
-			add_history(str);
-		str = replace(str, -1);
-		printf("%s\n", str);
+		if (c == str[i])
+			return (i);
+		i++;
 	}
-	return (0);
+	return (-1);
 }

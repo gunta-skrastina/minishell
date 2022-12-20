@@ -37,11 +37,8 @@ CFILES = ft_isalpha.c \
 	ft_putchar_fd.c \
 	ft_putstr_fd.c \
 	ft_putendl_fd.c \
-	ft_putnbr_fd.c
-
-OBJECTS = $(CFILES:.c=.o)
-
-BONUSFILES = ft_lstnew.c \
+	ft_putnbr_fd.c \
+	ft_lstnew.c \
 	ft_lstadd_front.c \
 	ft_lstsize.c \
 	ft_lstlast.c \
@@ -51,7 +48,7 @@ BONUSFILES = ft_lstnew.c \
 	ft_lstiter.c \
 	ft_lstmap.c
 
-BONUSOBJECTS = $(BONUSFILES:.c=.o)
+OBJECTS = $(CFILES:.c=.o)
 
 all: $(NAME)
 
@@ -60,9 +57,6 @@ $(NAME): $(OBJECTS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
-
-bonus: $(BONUSOBJECTS)
-	@make OBJECTS="$(BONUSOBJECTS)" all
 
 clean:
 	rm -f $(OBJECTS) $(BONUSOBJECTS)

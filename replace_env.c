@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/04 13:57:19 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:15:26 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ char	*ft_getenv(char *env, t_env_list *env_list)
 {
 	while (env_list)
 	{
-		if (!ft_strncmp(env, env_list->env_name, ft_strlen(env))
-			&& ft_strlen(env) == ft_strlen(env_list->env_name))
-			return (env_list->env_value);
+		if (!ft_strncmp(env, env_list->name, ft_strlen(env))
+			&& ft_strlen(env) == ft_strlen(env_list->name))
+			return (env_list->value);
 		env_list = env_list->next;
 	}
 	return (NULL);

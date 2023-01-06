@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/06 19:22:01 by gskrasti         ###   ########.fr       */
+/*   Created: 2023/01/06 17:02:51 by gskrasti          #+#    #+#             */
+/*   Updated: 2023/01/06 19:10:52 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[], char **envp)
+void	pwd(t_env_list *env_list)
 {
-	char		*str;
-	t_env_list	*env_list;
-
-	if (argc != 1 && argv)
+	while (env_list)
 	{
-		printf("ERROR: No arguments required\n");
-		exit(0);
+		if (ft_strncmp(env_list->name, "PWD", 3)
+			&& ft_strlen(env_list->name) == 3)
+			printf("%s\n", env_list->value);
+		else
+			env_list = env_list->next;
 	}
-	env_list = init_env_list(envp);
-	while (42 || env_list)
-	{
-		// signal(SIGQUIT, SIG_IGN);
-		// signal(SIGINT, handle_signals);
-		str = readline("> ");
-		if (ft_strlen(str) > 0)
-			add_history(str);
-		str = replace(str, -1, env_list);
-		printf("%s\n", str);
-	}
-	return (0);
 }

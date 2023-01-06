@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/04 13:46:12 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:15:09 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 
 typedef struct s_env_list
 {
-	char				*env_name;
-    char				*env_value;
+	char				*name;
+	char				*value;
+	int					num;
 	struct s_env_list	*next;
 }					t_env_list;
 
@@ -32,12 +33,15 @@ char		*replace_env(char *str, int i, char quote, t_env_list *env_list);
 int			ft_charcmp(char *str, char c);
 char		*ft_new_str(char *str, int i, int j, char *env, t_env_list *env_list);
 void		handle_signals(int sig);
-t_env_list	*ft_env_lstnew(char *env_name, char *env_value);
+t_env_list	*ft_env_lstnew(char *name, char *value);
 t_env_list	*ft_env_lstlast(t_env_list *lst);
-void		ft_env_lstdelone(t_env_list *lst);
 void		ft_env_lstadd_back(t_env_list **lst, t_env_list *new);
+int			ft_env_lstsize(t_env_list *lst);
 t_env_list	*init_env_list(char **envp);
 char		*ft_getenv(char *env, t_env_list *env_list);
-void 		ft_env(t_env_list *env_list);
+void		env(t_env_list *env_list);
+void		pwd(t_env_list *env_list);
+void		unset(t_env_list *env_list, char *cmd);
+void		export(t_env_list *env_list);
 
 #endif

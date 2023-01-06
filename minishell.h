@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2022/12/20 14:11:15 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/04 13:46:12 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,26 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
+# include <signal.h>
 
-char	*replace(char *str, int i);
-char	*replace_env(char *str, int i, char quote);
-int		ft_charcmp(char *str, char c);
-// char	*env_exists(char *str);
-char	*ft_new_str(char *str, int i, int j, char *env);
+typedef struct s_env_list
+{
+	char				*env_name;
+    char				*env_value;
+	struct s_env_list	*next;
+}					t_env_list;
+
+char		*replace(char *str, int i, t_env_list *env_list);
+char		*replace_env(char *str, int i, char quote, t_env_list *env_list);
+int			ft_charcmp(char *str, char c);
+char		*ft_new_str(char *str, int i, int j, char *env, t_env_list *env_list);
+void		handle_signals(int sig);
+t_env_list	*ft_env_lstnew(char *env_name, char *env_value);
+t_env_list	*ft_env_lstlast(t_env_list *lst);
+void		ft_env_lstdelone(t_env_list *lst);
+void		ft_env_lstadd_back(t_env_list **lst, t_env_list *new);
+t_env_list	*init_env_list(char **envp);
+char		*ft_getenv(char *env, t_env_list *env_list);
+void 		ft_env(t_env_list *env_list);
 
 #endif

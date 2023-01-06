@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/04 13:56:33 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/04 14:03:16 by gskrasti         ###   ########.fr       */
+/*   Created: 2023/01/01 23:27:58 by gskrasti          #+#    #+#             */
+/*   Updated: 2023/01/02 00:24:37 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_env(t_env_list *env_list)
-{
-	while (env_list)
-	{
-		printf("%s=%s\n", env_list->env_name, env_list->env_value);
-		env_list = env_list->next;
-	}
-}
-
+// void	handle_signals(int sig)
+// {
+// 	if (sig == SIGINT)
+// 	{
+// 		rl_replace_line("", 0);
+// 		rl_on_new_line();
+// 	}
+// }

@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/06 19:15:09 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/09 13:13:54 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int			ft_env_lstsize(t_env_list *lst);
 t_env_list	*init_env_list(char **envp);
 char		*ft_getenv(char *env, t_env_list *env_list);
 void		env(t_env_list *env_list);
-void		pwd(t_env_list *env_list);
+void		pwd(void);
 void		unset(t_env_list *env_list, char *cmd);
 void		export(t_env_list *env_list);
 

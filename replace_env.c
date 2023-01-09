@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/06 19:15:26 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/09 15:22:33 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_env_list	*init_env_list(char **envp)
 	env_list = NULL;
 	while (envp[i])
 	{
-		var = ft_split(envp[i], '=');
+		var = split_env(envp[i], '=');
 		ft_env_lstadd_back(&env_list, ft_env_lstnew(var[0], var[1]));
 		i++;
 		if (var)
@@ -95,19 +95,18 @@ char	*replace_env(char *str, int i, char quote, t_env_list *env_list)
 
 char	*ft_new_str(char *str, int i, int j, char *env, t_env_list *env_list)
 {
-	char	*temp_begin;
-	char	*temp_end;
-	char	*new_env;
+	char		*temp_begin;
+	char		*temp_end;
+	char		*new_env;
+	t_env_list	*node;
 
 	temp_begin = ft_calloc(i + 1, sizeof(char *));
 	temp_end = ft_calloc(ft_strlen(str + j) + 1, sizeof(char *));
 	ft_memcpy(temp_begin, str, i);
 	ft_memcpy(temp_end, str + i + ft_strlen(env) + 1, ft_strlen(str + j));
-	if (ft_getenv(env, env_list))
-	{
-		new_env = ft_calloc(ft_strlen(ft_getenv(env, env_list)) + 1, sizeof(char *));
-		new_env = ft_getenv(env, env_list);
-	}
+	node = ft_getenv(env, env_list);
+	if (node)
+		new_env = node->value;
 	else
 		new_env = ft_calloc(1, sizeof(char *));
 	free (str);
@@ -115,19 +114,19 @@ char	*ft_new_str(char *str, int i, int j, char *env, t_env_list *env_list)
 	str = ft_strjoin(str, temp_end);
 	free(temp_begin);
 	free(temp_end);
-	// if (new_env)
-	// 	free(new_env);
+	if (new_env)
+		free(new_env);
 	free(env);
 	return (str);
 }
 
-char	*ft_getenv(char *env, t_env_list *env_list)
+t_env_list	*ft_getenv(char *env, t_env_list *env_list)
 {
 	while (env_list)
 	{
 		if (!ft_strncmp(env, env_list->name, ft_strlen(env))
 			&& ft_strlen(env) == ft_strlen(env_list->name))
-			return (env_list->value);
+			return (env_list);
 		env_list = env_list->next;
 	}
 	return (NULL);

@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 17:02:51 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/09 13:30:18 by gskrasti         ###   ########.fr       */
+/*   Created: 2023/01/09 13:38:38 by gskrasti          #+#    #+#             */
+/*   Updated: 2023/01/09 14:23:00 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(void)
+void	ft_error(char *cmd, char *path, char *err)
 {
-	char	cwd[4096];
-
-	printf("%s\n", getcwd(cwd, 4096));
+	if (!path)
+		printf("minishell: %s: %s\n", cmd, err);
+	else
+		printf("minishell: %s: %s: %s\n", cmd, path, err);
 }

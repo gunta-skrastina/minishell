@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/06 19:22:01 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/13 22:33:52 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(int argc, char *argv[], char **envp)
 {
 	char		*str;
 	t_env_list	*env_list;
+	t_cmd		*cmd;
 
 	if (argc != 1 && argv)
 	{
@@ -25,13 +26,24 @@ int	main(int argc, char *argv[], char **envp)
 	env_list = init_env_list(envp);
 	while (42 || env_list)
 	{
-		// signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		// signal(SIGINT, handle_signals);
 		str = readline("> ");
 		if (ft_strlen(str) > 0)
 			add_history(str);
 		str = replace(str, -1, env_list);
-		printf("%s\n", str);
+		if (str)
+		{
+			if (str[ft_strlen(str) - 1] == '|' || str[0] == '|')
+				printf("minishell: parse error near `|'\n");
+			else if (validate_quotes(str) < 0)
+				printf("minishell: parse error near quotes\n");
+			else
+			{
+				cmd = parse(str);
+				execute_builtins(cmd, env_list);
+			}
+		}
 	}
 	return (0);
 }

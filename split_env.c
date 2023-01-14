@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 14:37:49 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/09 14:56:19 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/14 02:40:10 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	**split_env(char const *s, char c)
 	char	**env;
 	int		len_name;
 	int		len_value;
-	
+
 	if (!s)
 		return (NULL);
 	env = ft_calloc(2, sizeof(char **));

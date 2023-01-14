@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 23:27:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/02 00:24:37 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/13 05:11:28 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 // {
 // 	if (sig == SIGINT)
 // 	{
-// 		rl_replace_line("", 0);
+// 		printf("\n");
 // 		rl_on_new_line();
+// 		rl_replace_line("", 1);
+// 		rl_redisplay();
 // 	}
 // }

@@ -6,37 +6,48 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:09:08 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/06 19:11:00 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/14 02:30:12 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	unset(t_env_list *env_list, char *cmd)
+void	unset(t_env_list *env_list, char *vars)
 {
 	t_env_list	*previous;
+	t_env_list	*temp;
+	char		**split;
+	int			i;
 	t_env_list	*head;
 
 	previous = NULL;
+	i = 0;
+	split = ft_split(vars, 32);
 	head = env_list;
-	while (env_list)
+	while (split[i])
 	{
-		if (!ft_strncmp(env_list->name, cmd, ft_strlen(cmd))
-			&& ft_strlen(cmd) == ft_strlen(env_list->name))
+		env_list = head;
+		while (env_list)
 		{
-			if (previous)
+			if (!ft_strncmp(env_list->name, split[i], ft_strlen(split[i]))
+				&& ft_strlen(split[i]) == ft_strlen(env_list->name))
 			{
-				previous->next = env_list->next;
-				free(env_list);
+				if (previous)
+				{
+					previous->next = env_list->next;
+					free(env_list);
+				}
+				else
+				{
+					temp = env_list;
+					env_list = env_list->next;
+					free(temp);
+				}
+				break ;
 			}
-			else
-			{
-				head = env_list->next;
-				free(env_list);
-			}
-			break ;
+			previous = env_list;
+			env_list = env_list->next;
 		}
-		previous = env_list;
-		env_list = env_list->next;
+		i++;
 	}
 }

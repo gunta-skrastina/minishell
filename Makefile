@@ -5,7 +5,8 @@ CFLAGS = -Wextra -Wall -Werror -lreadline
 LIBFT = libft.a
 NAME = minishell
 
-SRCS = main.c utils.c replace_env.c signals.c env.c env_list_utils.c pwd.c unset.c export.c cd.c error.c split_env.c
+SRCS = main.c utils.c replace_env.c signals.c env.c env_list_utils.c pwd.c unset.c \
+	export.c cd.c error.c split_env.c execute.c parse.c cmd_utils.c echo.c exit.c
 
 OBJS = $(SRCS:.c=.o)
 

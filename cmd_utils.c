@@ -1,22 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/06 17:02:51 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/14 00:58:08 by gskrasti         ###   ########.fr       */
+/*   Created: 2023/01/13 18:46:26 by gskrasti          #+#    #+#             */
+/*   Updated: 2023/01/14 00:42:54 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(void)
+t_cmd	*ft_cmdnew(char *cmd, char *vars)
 {
-	char	*cwd;
+	t_cmd	*new_cmd;
 
-	cwd = getcwd(NULL, 1);
-	printf("%s\n", cwd);
-	free(cwd);
+	new_cmd = malloc(sizeof(*new_cmd));
+	if (!new_cmd)
+		return (NULL);
+	new_cmd->cmd = cmd;
+	new_cmd->vars = vars;
+	new_cmd->next = NULL;
+	return (new_cmd);
+}
+
+void	ft_cmdadd_back(t_cmd **lst, t_cmd *new)
+{
+	t_cmd	*current;
+
+	if (*lst)
+	{
+		current = *lst;
+		while (current->next)
+			current = current->next;
+		current->next = new;
+	}
+	else
+		*lst = new;
 }

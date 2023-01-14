@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:58:57 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/09 16:43:11 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/14 02:38:57 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 static void	sort(t_env_list *env_list, int size);
 
-void	export(t_env_list *env_list, char **var)
+void	export(t_env_list *env_list, char *vars)
 {
 	int			i;
 	int			size;
 	t_env_list	*head;
+	char		**split;
 
-	if (!var)
+	if (!vars || !vars[0])
 	{
 		i = 1;
 		head = env_list;
@@ -34,21 +35,27 @@ void	export(t_env_list *env_list, char **var)
 				i++;
 			}
 			if (env_list->next)
+			{
 				env_list = env_list->next;
+			}
 			else
+			{
 				env_list = head;
+			}
 		}
 	}
 	else
 	{
 		i = 0;
-
-		while (var[i])
+		split = ft_split(vars, 32);
+		while (split[i])
 		{
-			if (var[i][0] == '=')
-				printf("minishell: %s: `%s\': %s\n", "export", var[i], "not a valid identifier");
+			if (split[i][0] == '=')
+			{
+				printf("minishell: %s: `%s\': %s\n", "export", split[i], "not a valid identifier");
+			}
 			else
-				export_env(env_list, var[i]);
+				export_env(env_list, split[i]);
 			i++;
 		}
 	}
@@ -60,6 +67,12 @@ static void	sort(t_env_list *env_list, int size)
 	t_env_list	*temp;
 	int			i;
 
+	temp = env_list;
+	while (temp)
+	{
+		temp->num = 0;
+		temp = temp->next;
+	}
 	i = size;
 	max = env_list;
 	while (i > 0)
@@ -81,14 +94,14 @@ static void	sort(t_env_list *env_list, int size)
 	}
 }
 
-void	export_env(t_env_list *env_list, char *var)
+void	export_env(t_env_list *env_list, char *vars)
 {
 	t_env_list	*env;
 	char		*name;
 	char		*value;
 	char		**new_var;
 
-	new_var = split_env(var, '=');
+	new_var = split_env(vars, '=');
 	name = new_var[0];
 	value = new_var[1];
 	if (ft_strlen(name) > 0)

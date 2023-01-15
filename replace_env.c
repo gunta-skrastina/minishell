@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/09 15:22:33 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/15 02:33:14 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ char	*ft_new_str(char *str, int i, int j, char *env, t_env_list *env_list)
 	str = ft_strjoin(str, temp_end);
 	free(temp_begin);
 	free(temp_end);
-	if (new_env)
-		free(new_env);
+	// if (new_env)
+	// 	free(new_env);
 	free(env);
 	return (str);
 }

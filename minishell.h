@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/14 02:38:30 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/15 02:00:35 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,8 @@ int			validate_quotes(char *str);
 t_cmd		*parse_vars(t_cmd *cmd);
 void		echo(char *str);
 void		ft_exit(t_cmd *cmd, t_env_list *env);
+void		remove_quotes(t_cmd *cmd);
+char		*without_quotes(char *str);
+void		free_cmd(t_cmd *cmd);
 
 #endif

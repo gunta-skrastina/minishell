@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/14 02:41:21 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/15 02:25:47 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ t_cmd	*parse(char *str)
 		i++;
 	}
 	cmd = parse_vars(cmd);
+	remove_quotes(cmd);
 	return (cmd);
 }
 
@@ -85,3 +86,53 @@ int	validate_quotes(char *str)
 	}
 	return (0);
 }
+
+void	remove_quotes(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		cmd->cmd = without_quotes(cmd->cmd);
+		if (cmd->vars)
+		{
+			cmd->vars = without_quotes(cmd->vars);
+		}
+		cmd = cmd->next;
+	}
+}
+
+char	*without_quotes(char *str)
+{
+	char	*new_str;
+	int		i;
+	int		j;
+	int		k;
+
+	if (!str)
+		return (NULL);
+	new_str = ft_calloc(ft_strlen(str) + 1, sizeof(char *));
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			k = ft_charcmp(str + i + 1, str[i]);
+			i++;
+			while (i < k)
+			{
+				new_str[j] = str[i];
+				i++;
+				j++;
+			}
+		}
+		else
+		{
+			new_str[j] = str[i];
+			i++;
+			j++;	
+		}
+	}
+	// free(str);
+	return (new_str);
+}
+

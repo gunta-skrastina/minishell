@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 02:25:47 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/15 02:57:41 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,15 @@ char	*without_quotes(char *str)
 	{
 		if (str[i] == '"' || str[i] == '\'')
 		{
-			k = ft_charcmp(str + i + 1, str[i]);
+			k = ft_charcmp(str + i + 1, str[i]) + i ;
 			i++;
-			while (i < k)
+			while (i <= k)
 			{
 				new_str[j] = str[i];
 				i++;
 				j++;
 			}
+			i++;
 		}
 		else
 		{

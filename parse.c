@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 02:57:41 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/15 15:19:58 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,11 @@ void	remove_quotes(t_cmd *cmd)
 {
 	while (cmd)
 	{
+		cmd->cmd = remove_spaces(cmd->cmd);
 		cmd->cmd = without_quotes(cmd->cmd);
 		if (cmd->vars)
 		{
+			cmd->vars = remove_spaces(cmd->vars);
 			cmd->vars = without_quotes(cmd->vars);
 		}
 		cmd = cmd->next;
@@ -130,10 +132,9 @@ char	*without_quotes(char *str)
 		{
 			new_str[j] = str[i];
 			i++;
-			j++;	
+			j++;
 		}
 	}
-	// free(str);
+	free(str);
 	return (new_str);
 }
-

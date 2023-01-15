@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 02:00:35 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/15 15:16:30 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		cd(char *path, t_env_list *env_list);
 void		ft_error(char *cmd, char *path, char *err);
 void		echo(char *vars);
 char		**split_env(char const *s, char c);
-void		replace_pwd(char *path, t_env_list *env_list);
+void		replace_pwd(t_env_list *env_list);
 int			execute_builtins(t_cmd *cmd, t_env_list *env_list);
 t_cmd		*parse(char *str);
 t_cmd		*ft_cmdnew(char *cmd, char *vars);
@@ -67,5 +67,6 @@ void		ft_exit(t_cmd *cmd, t_env_list *env);
 void		remove_quotes(t_cmd *cmd);
 char		*without_quotes(char *str);
 void		free_cmd(t_cmd *cmd);
+char		*remove_spaces(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 18:46:26 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 15:13:11 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/16 13:57:02 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	free_cmd(t_cmd *cmd)
 	{
 		temp_cmd = cmd;
 		cmd = cmd->next;
+		free(temp_cmd->cmd);
+		free(temp_cmd->vars);
 		free(temp_cmd);
 	}
 }

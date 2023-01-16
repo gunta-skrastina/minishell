@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 15:16:30 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:00:15 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,6 @@ void		remove_quotes(t_cmd *cmd);
 char		*without_quotes(char *str);
 void		free_cmd(t_cmd *cmd);
 char		*remove_spaces(char *str);
+void		free_env_list(t_env_list *env);
 
 #endif

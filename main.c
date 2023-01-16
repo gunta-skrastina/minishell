@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 02:35:27 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:09:25 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	main(int argc, char *argv[], char **envp)
 				execute_builtins(cmd, env_list);
 			}
 		}
-		// free(str);
-		// free_cmd(cmd);
+		free_cmd(cmd);
+		free(str);
 	}
 	return (0);
 }

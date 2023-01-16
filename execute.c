@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/14 02:36:57 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:27:40 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	execute_builtins(t_cmd *cmd, t_env_list *env_list)
 		env(env_list);
 	else if (!ft_strncmp(cmd->cmd, "exit", 4) && ft_strlen(cmd->cmd) == 4)
 		ft_exit(cmd, env_list);
+	else if (cmd->cmd[0] == '\0')
+		return (0);
 	else
 		printf("minishell: %s: command not found\n", cmd->cmd);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 22:39:05 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 01:57:25 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:41:50 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,27 @@
 
 void	echo(char *str)
 {
-	if (!ft_strncmp(str, "-n ", 3))
-		printf("%s", str + 3);
+	int	i;
+
+	i = 0;
+	if (ft_strncmp(str, "-n ", 3))
+	{
+		while (str[i])
+		{
+			if (str[i] != '"' && str[i] != '\'')
+				ft_putchar_fd(str[i], 1);
+			i++;
+		}
+		ft_putchar_fd('\n', 1);
+	}
 	else
-		printf("%s\n", str);
+	{
+		i = 3;
+		while (str[i])
+		{
+			if (str[i] != '"' && str[i] != '\'')
+				ft_putchar_fd(str[i], 1);
+			i++;
+		}
+	}
 }

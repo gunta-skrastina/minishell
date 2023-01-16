@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 00:36:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/06 19:13:07 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/16 13:59:55 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,18 @@ int	ft_env_lstsize(t_env_list *lst)
 		count++;
 	}
 	return (count);
+}
+
+void	free_env_list(t_env_list *env)
+{
+	t_env_list	*temp_env;
+
+	while (env)
+	{
+		temp_env = env;
+		env = env->next;
+		free(temp_env->name);
+		free(temp_env->value);
+		free(temp_env);
+	}
 }

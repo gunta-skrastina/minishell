@@ -6,78 +6,57 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:58:57 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/14 02:38:57 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 04:58:56 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	sort(t_env_list *env_list, int size);
+static void	sort(t_env_list *env, int size);
+static void	zero_num(t_env_list *env);
 
-void	export(t_env_list *env_list, char *vars)
+void	export(t_env_list *env, char *vars)
 {
 	int			i;
 	int			size;
 	t_env_list	*head;
-	char		**split;
 
 	if (!vars || !vars[0])
 	{
 		i = 1;
-		head = env_list;
-		size = ft_env_lstsize(env_list);
-		sort(env_list, size);
+		head = env;
+		size = ft_env_lstsize(env);
+		sort(env, size);
 		while (size >= i)
 		{
-			if (env_list->num == i)
+			if (env->num == i)
 			{
-				printf("declare -x %s=\"%s\"\n", env_list->name, env_list->value);
+				printf("declare -x %s=\"%s\"\n", env->name, env->value);
 				i++;
 			}
-			if (env_list->next)
-			{
-				env_list = env_list->next;
-			}
+			if (env->next)
+				env = env->next;
 			else
-			{
-				env_list = head;
-			}
+				env = head;
 		}
 	}
 	else
-	{
-		i = 0;
-		split = ft_split(vars, 32);
-		while (split[i])
-		{
-			if (split[i][0] == '=')
-			{
-				printf("minishell: %s: `%s\': %s\n", "export", split[i], "not a valid identifier");
-			}
-			else
-				export_env(env_list, split[i]);
-			i++;
-		}
-	}
+		export_add(env, vars);
 }
 
-static void	sort(t_env_list *env_list, int size)
+static void	sort(t_env_list *env, int size)
 {
 	t_env_list	*max;
 	t_env_list	*temp;
 	int			i;
 
-	temp = env_list;
-	while (temp)
-	{
-		temp->num = 0;
-		temp = temp->next;
-	}
+	temp = env;
+	zero_num(env);
 	i = size;
-	max = env_list;
+	max = env;
 	while (i > 0)
 	{
-		temp = env_list;
+		temp = env;
 		while (temp)
 		{
 			if (ft_strncmp(temp->name, max->name,
@@ -86,7 +65,7 @@ static void	sort(t_env_list *env_list, int size)
 			temp = temp->next;
 		}
 		max->num = i;
-		temp = env_list;
+		temp = env;
 		while (temp->num != 0 && temp->next)
 			temp = temp->next;
 		max = temp;
@@ -94,9 +73,9 @@ static void	sort(t_env_list *env_list, int size)
 	}
 }
 
-void	export_env(t_env_list *env_list, char *vars)
+void	export_env(t_env_list *env, char *vars)
 {
-	t_env_list	*env;
+	t_env_list	*new_env;
 	char		*name;
 	char		*value;
 	char		**new_var;
@@ -106,15 +85,43 @@ void	export_env(t_env_list *env_list, char *vars)
 	value = new_var[1];
 	if (ft_strlen(name) > 0)
 	{
-		env = ft_getenv(name, env_list);
-		if (env)
+		new_env = ft_getenv(name, env);
+		if (new_env)
 		{
-			free(env->value);
-			env->value = value;
+			free(new_env->value);
+			new_env->value = value;
 		}
 		else
-		{
-			ft_env_lstadd_back(&env_list, ft_env_lstnew(name, value));
-		}
+			ft_env_lstadd_back(&env, ft_env_lstnew(name, value));
+	}
+	free(new_var);
+}
+
+void	export_add(t_env_list *env, char *vars)
+{
+	int		i;
+	char	**split;
+
+	i = 0;
+	split = ft_split(vars, 32);
+	while (split[i])
+	{
+		if (split[i][0] == '=' || ft_isdigit(split[i][0]))
+			printf("minishell: %s: `%s\': %s\n",
+				"export", split[i], "not a valid identifier");
+		else
+			export_env(env, split[i]);
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
+
+static void	zero_num(t_env_list *env)
+{
+	while (env)
+	{
+		env->num = 0;
+		env = env->next;
 	}
 }

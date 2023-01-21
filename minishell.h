@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/16 14:00:15 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 03:01:35 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 typedef struct s_env_list
 {
@@ -69,5 +71,7 @@ char		*without_quotes(char *str);
 void		free_cmd(t_cmd *cmd);
 char		*remove_spaces(char *str);
 void		free_env_list(t_env_list *env);
+int			execute_path(t_cmd *cmd, t_env_list *env);
+int			find_path(char **argv, t_cmd *cmd, t_env_list *env);
 
 #endif

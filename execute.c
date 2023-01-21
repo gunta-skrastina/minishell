@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 03:04:28 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 03:12:58 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ int	find_path(char **argv, t_cmd *cmd, t_env_list *env)
 		i = execve(argv[0], argv, NULL);
 		j++;
 	}
+	j = -1;
+	while (path[++j])
+		free(path[j]);
+	free(path);
 	if (i == -1)
-	{
-		free(path);
 		return (i);
-	}
 	return (0);
 }

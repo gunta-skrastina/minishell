@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 03:22:30 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 12:25:00 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int	main(int argc, char *argv[], char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		// signal(SIGINT, handle_signals);
 		str = readline("> ");
+		if(!str)
+		{
+			free(str);
+			exit(0);
+		}
 		if (ft_strlen(str) > 0)
 			add_history(str);
 		str = replace(str, -1, env_list);
@@ -42,7 +47,8 @@ int	main(int argc, char *argv[], char **envp)
 			{
 				cmd = parse(str);
 				execute_builtins(cmd, env_list);
-				free_cmd(cmd);
+				if (cmd != NULL)
+					free_cmd(cmd);
 			}
 		}
 		free(str);

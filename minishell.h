@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 03:46:58 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:29:24 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_cmd
 {
 	char			*cmd;
 	char			*vars;
+	char			**in;
+	char			**out;
 	struct s_cmd	*next;
 }					t_cmd;
 

@@ -1,7 +1,8 @@
 # _*_ MakeFile _*_
 
 CC = gcc
-CFLAGS = -Wextra -Wall -Werror -lreadline
+READLINE=-I $(HOME)/goinfre/.brew/opt/readline/include/ -L $(HOME)/goinfre/.brew/opt/readline/lib/ -lreadline
+CFLAGS = -Wextra -Wall -Werror
 LIBFT = libft.a
 NAME = minishell
 
@@ -22,7 +23,7 @@ $(LIBFT):
 
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINE) -o $(NAME)
 
 clean:
 	rm -f $(OBJS) 

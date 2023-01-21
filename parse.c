@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/16 14:48:56 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 15:41:35 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_cmd	*parse(char *str)
 		{
 			str[i] = '\0';
 			ft_cmdadd_back(&cmd, ft_cmdnew(str + i + 1, NULL));
+			////separate and store in and out of each command
 		}
 		i++;
 	}

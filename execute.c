@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 03:12:58 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 12:14:17 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	execute_builtins(t_cmd *cmd, t_env_list *env_list)
 		echo(cmd->vars);
 	else if (!ft_strncmp(cmd->cmd, "cd", 2) && ft_strlen(cmd->cmd) == 2)
 		cd(cmd->vars, env_list);
-	else if (!ft_strncmp(cmd->cmd, "pwd", 2) && ft_strlen(cmd->cmd) == 3)
+	else if (!ft_strncmp(cmd->cmd, "pwd", 3) && ft_strlen(cmd->cmd) == 3)
 		pwd();
 	else if (!ft_strncmp(cmd->cmd, "export", 6) && ft_strlen(cmd->cmd) == 6)
 		export(env_list, cmd->vars);
@@ -43,6 +43,7 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 	int		i;
 	char	*argv[3];
 
+	i = -1;
 	argv[0] = cmd->cmd;
 	if (cmd->vars[0])
 		argv[1] = cmd->vars;
@@ -55,7 +56,7 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 	if (pid == 0)
 	{
 		i = execve(cmd->cmd, argv, NULL);
-		if (i == -1)
+		if (i == -1 && ft_getenv("PATH", env) != NULL)
 			i = find_path(argv, cmd, env);
 		return (i);
 	}

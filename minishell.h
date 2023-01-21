@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 03:01:35 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/21 03:46:58 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ t_env_list	*ft_getenv(char *env, t_env_list *env_list);
 void		env(t_env_list *env_list);
 void		pwd(void);
 void		unset(t_env_list *env_list, char *vars);
-void		export(t_env_list *env_list, char *vars);
-void		export_env(t_env_list *env_list, char *var);
+void		export(t_env_list *env, char *vars);
+void		export_env(t_env_list *env, char *var);
 void		cd(char *path, t_env_list *env_list);
 void		ft_error(char *cmd, char *path, char *err);
 void		echo(char *vars);
@@ -73,5 +73,6 @@ char		*remove_spaces(char *str);
 void		free_env_list(t_env_list *env);
 int			execute_path(t_cmd *cmd, t_env_list *env);
 int			find_path(char **argv, t_cmd *cmd, t_env_list *env);
+void		export_add(t_env_list *env, char *vars);
 
 #endif

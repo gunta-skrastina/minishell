@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 15:45:59 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:34:18 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int	main(int argc, char *argv[], char **envp)
 	while (42 || env_list)
 	{
 		signal(SIGQUIT, SIG_IGN);
-		// signal(SIGINT, handle_signals);
+		signal(SIGINT, handle_signals);
 		str = readline("> ");
-		// if(EOF)
-		// {
-		// 	free(str);
-		// 	free_env_list(env_list);
-		// 	exit(0);
-		// }
+		if(!str)
+		{
+			free(str);
+			free_env_list(env_list);
+			exit(0);
+		}
 		if (ft_strlen(str) > 0)
 			add_history(str);
 		str = replace(str, -1, env_list);

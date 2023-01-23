@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 15:29:24 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:30:28 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,20 @@ typedef struct s_env_list
 	struct s_env_list	*next;
 }					t_env_list;
 
+typedef struct s_out
+{
+	char	*name;
+	int		num;
+}			t_out;
+
 typedef struct s_cmd
 {
 	char			*cmd;
 	char			*vars;
+	int				here_doc;
+	char			*lim;
 	char			**in;
-	char			**out;
+	struct s_out	*out;
 	struct s_cmd	*next;
 }					t_cmd;
 
@@ -76,5 +84,13 @@ void		free_env_list(t_env_list *env);
 int			execute_path(t_cmd *cmd, t_env_list *env);
 int			find_path(char **argv, t_cmd *cmd, t_env_list *env);
 void		export_add(t_env_list *env, char *vars);
+void		rl_replace_line(const char *text, int clear_undo);
+
+
+void    ft_free_split(char **s, int i);
+size_t	ft_numwords(const char *s, char c);
+int    ft_add_in(t_cmd *cmd);
+int    ft_add_out(t_cmd *cmd);
+void ft_cut_filename(char **s, int pos, int num);
 
 #endif

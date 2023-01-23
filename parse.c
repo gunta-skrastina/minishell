@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
+/*   By: htoustsi <htoustsi@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 15:41:35 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/22 01:26:48 by htoustsi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,15 @@ t_cmd	*parse(char *str)
 		}
 		i++;
 	}
+//	if (ft_charcmp(cmd->cmd, '<') != -1)
+	i = ft_add_in(cmd);
+//	if (ft_charcmp(cmd->cmd, '>') != -1)
+	i = ft_add_out(cmd);
+//	printf("test6\n");
 	cmd = parse_vars(cmd);
+//	printf("TEST_VARS\n");
 	remove_quotes(cmd);
+//	printf("TEST_QUOTES\n");
 	return (cmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 13:53:17 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:46:45 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,42 +43,45 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 	int		i;
 	char	*argv[3];
 
-	i = -1;
 	argv[0] = cmd->cmd;
 	if (cmd->vars[0])
 		argv[1] = cmd->vars;
 	else
 		argv[1] = NULL;
 	argv[2] = NULL;
-	pid = fork();
-	if (pid == -1)
-		return (-1);
-	if (pid == 0)
+	i = access(cmd->cmd, X_OK);
+	if (i == -1 && ft_getenv("PATH", env) != NULL)
+		argv[0] = find_path(argv[0], env);
+	if (!i || (argv[0] != NULL && ft_getenv("PATH", env) != NULL))
 	{
-		i = execve(cmd->cmd, argv, NULL);
-		if (i == -1 && ft_getenv("PATH", env) != NULL)
-			i = find_path(argv, cmd, env);
-		return (i);
+		pid = fork();
+		if (pid == -1)
+			return (-1);
+		if (pid == 0)
+			execve(argv[0], argv, NULL);
+		else
+			wait(NULL);
+		return (0);
 	}
-	else
-		wait(NULL);
-	return (0);
+	return (-1);
 }
 
-int	find_path(char **argv, t_cmd *cmd, t_env_list *env)
+char	*find_path(char *cmd, t_env_list *env)
 {
 	int		i;
 	int		j;
 	char	**path;
+	char	*just_cmd;
 
+	just_cmd = cmd;
 	path = ft_split(ft_getenv("PATH", env)->value, ':');
 	i = -1;
 	j = 0;
 	while (i == -1 && path[j] != NULL)
 	{
 		path[j] = ft_strjoin(path[j], "/");
-		argv[0] = ft_strjoin(path[j], cmd->cmd);
-		i = execve(argv[0], argv, NULL);
+		cmd = ft_strjoin(path[j], just_cmd);
+		i = access(cmd, X_OK);
 		j++;
 	}
 	j = -1;
@@ -86,6 +89,6 @@ int	find_path(char **argv, t_cmd *cmd, t_env_list *env)
 		free(path[j]);
 	free(path);
 	if (i == -1)
-		return (i);
-	return (0);
+		return (NULL);
+	return (cmd);
 }

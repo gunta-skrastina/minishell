@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/23 13:30:28 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:44:02 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,15 @@ void		free_cmd(t_cmd *cmd);
 char		*remove_spaces(char *str);
 void		free_env_list(t_env_list *env);
 int			execute_path(t_cmd *cmd, t_env_list *env);
-int			find_path(char **argv, t_cmd *cmd, t_env_list *env);
+char		*find_path(char *cmd, t_env_list *env);
 void		export_add(t_env_list *env, char *vars);
 void		rl_replace_line(const char *text, int clear_undo);
 
 
-void    ft_free_split(char **s, int i);
-size_t	ft_numwords(const char *s, char c);
-int    ft_add_in(t_cmd *cmd);
-int    ft_add_out(t_cmd *cmd);
-void ft_cut_filename(char **s, int pos, int num);
+void		ft_free_split(char **s, int i);
+size_t		ft_numwords(const char *s, char c);
+int			ft_add_in(t_cmd *cmd);
+int			ft_add_out(t_cmd *cmd);
+void		ft_cut_filename(char **s, int pos, int num);
 
 #endif

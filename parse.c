@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htoustsi <htoustsi@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/22 01:26:48 by htoustsi         ###   ########.fr       */
+/*   Updated: 2023/01/23 14:10:36 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,20 @@ t_cmd	*parse(char *str)
 	while (i < len)
 	{
 		if (str[i] == '"' || str[i] == '\'')
-		{
 			i += ft_charcmp(str + i + 1, str[i]) + 1;
-		}
 		else if (str[i] == '|')
 		{
 			str[i] = '\0';
 			ft_cmdadd_back(&cmd, ft_cmdnew(str + i + 1, NULL));
-			////separate and store in and out of each command
 		}
 		i++;
 	}
-//	if (ft_charcmp(cmd->cmd, '<') != -1)
-	i = ft_add_in(cmd);
-//	if (ft_charcmp(cmd->cmd, '>') != -1)
-	i = ft_add_out(cmd);
-//	printf("test6\n");
+	if (ft_charcmp(cmd->cmd, '<') != -1)
+		i = ft_add_in(cmd);
+	if (ft_charcmp(cmd->cmd, '>') != -1)
+		i = ft_add_out(cmd);
 	cmd = parse_vars(cmd);
-//	printf("TEST_VARS\n");
 	remove_quotes(cmd);
-//	printf("TEST_QUOTES\n");
 	return (cmd);
 }
 
@@ -130,19 +124,11 @@ char	*without_quotes(char *str)
 			k = ft_charcmp(str + i + 1, str[i]) + i ;
 			i++;
 			while (i <= k)
-			{
-				new_str[j] = str[i];
-				i++;
-				j++;
-			}
+				new_str[j++] = str[i++];
 			i++;
 		}
 		else
-		{
-			new_str[j] = str[i];
-			i++;
-			j++;
-		}
+			new_str[j++] = str[i++];
 	}
 	free(str);
 	return (new_str);

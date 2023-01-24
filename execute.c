@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/23 15:46:45 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:53:59 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,9 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 	char	*argv[3];
 
 	argv[0] = cmd->cmd;
+	argv[1] = NULL;
 	if (cmd->vars[0])
 		argv[1] = cmd->vars;
-	else
-		argv[1] = NULL;
 	argv[2] = NULL;
 	i = access(cmd->cmd, X_OK);
 	if (i == -1 && ft_getenv("PATH", env) != NULL)
@@ -61,6 +60,7 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 			execve(argv[0], argv, NULL);
 		else
 			wait(NULL);
+		free(argv[0]);
 		return (0);
 	}
 	return (-1);
@@ -72,6 +72,7 @@ char	*find_path(char *cmd, t_env_list *env)
 	int		j;
 	char	**path;
 	char	*just_cmd;
+	char	*temp;
 
 	just_cmd = cmd;
 	path = ft_split(ft_getenv("PATH", env)->value, ':');
@@ -79,15 +80,16 @@ char	*find_path(char *cmd, t_env_list *env)
 	j = 0;
 	while (i == -1 && path[j] != NULL)
 	{
+		temp = path[j];
 		path[j] = ft_strjoin(path[j], "/");
+		free(temp);
 		cmd = ft_strjoin(path[j], just_cmd);
 		i = access(cmd, X_OK);
+		if (i == -1)
+			free(cmd);
 		j++;
 	}
-	j = -1;
-	while (path[++j])
-		free(path[j]);
-	free(path);
+	ft_free_split(path, 0);
 	if (i == -1)
 		return (NULL);
 	return (cmd);

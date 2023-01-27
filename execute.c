@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/24 14:10:04 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:21:50 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 			execve(argv[0], argv, NULL);
 		else
 			wait(NULL);
-		free(argv[0]);
+		if (i)
+			free(argv[0]);
 		return (0);
 	}
 	return (-1);

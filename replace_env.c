@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/16 14:49:46 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:11:26 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,20 @@ char	*replace(char *str, int i, t_env_list *env_list)
 
 	while (str[++i])
 	{
-		if (ft_charcmp(str, '$') < 0)
+		if (str[i] == '$' && str[i + 1] && str[i + 1] == 32)
+			i++;
+		if (ft_charcmp(str + i, '$') < 0)
 			return (str);
-		if (ft_charcmp(str, '$') < i)
-			i = ft_charcmp(str, '$');
-		if (str[i] == '$')
-			str = replace_env(str, i, 0, env_list);
+		if (str[i] == '$' && str[i + 1] != 32 && str[i + 1] != '\0')
+			str = replace_env(str, i, env_list);
 		else if ((str[i] == '\'' || str[i] == '"')
 			&& ft_charcmp(str + i + 1, str[i]) >= 0)
 		{
 			quote = str[i++];
-			while (str[i] && str[i] != quote)
+			while (str[i] && str[i] != quote && str[i + 1] != '\0')
 			{
-				if (str[i] == '$' && quote == '"')
-					str = replace_env(str, i, quote, env_list);
+				if (str[i] == '$' && quote == '"' && str[i + 1] != 32)
+					str = replace_env(str, i, env_list);
 				i++;
 			}
 		}
@@ -62,62 +62,57 @@ char	*replace(char *str, int i, t_env_list *env_list)
 	return (str);
 }
 
-char	*replace_env(char *str, int i, char quote, t_env_list *env_list)
+char	*replace_env(char *str, int i, t_env_list *env_list)
 {
 	int		j;
 	char	*env;
+	char	*new_env;
+	char	*end_str;
 
 	j = 0;
-	i++;
-	if (str[i] == ' ')
-		return (str);
-	env = ft_calloc(ft_strlen(str + i) + 1, sizeof(char *));
-	if (ft_isdigit(str[i]))
+	str[i++] = '\0';
+	env = str + i;
+	end_str = NULL;
+	while (env[j] && env[j] != '\0' && env[j] != 32
+		&& env[j] != '"' && env[j] != '$' && env[j] != '\'')
 	{
-		while (ft_isdigit(str[i + j]))
-		{
-			env[j] = str[i + j];
-			j++;
-		}
-		return (ft_new_str(str, --i, j, env, env_list));
-	}
-	while (str[i + j] && str[i + j] != '\0' && str[i + j] != ' '
-		&& str[i + j] != quote && str[i + j] != '$')
-	{
-		if (((str[i + j] == '\'' || str[i + j] == '"')
-				&& ft_charcmp(str + i + j, str[i + j]) >= 0))
-			return (ft_new_str(str, --i, j, env, env_list));
-		env[j] = str[i + j];
 		j++;
 	}
-	return (ft_new_str(str, --i, j, env, env_list));
+	new_env = ft_calloc(j + 1, sizeof(char *));
+	ft_memcpy(new_env, env, j);
+	if (env[j] == '\0')
+		end_str = NULL;
+	else
+	{
+		end_str = env + j;
+	}
+	return (ft_new_str(str, new_env, end_str, env_list));
 }
 
-char	*ft_new_str(char *str, int i, int j, char *env, t_env_list *env_list)
+char	*ft_new_str(char *str, char *env, char *end_str, t_env_list *env_list)
 {
-	char		*temp_begin;
-	char		*temp_end;
-	char		*new_env;
-	t_env_list	*node;
+	char	*new_str;
+	char	*new_env;
+	char	*temp;
 
-	temp_begin = ft_calloc(i + 1, sizeof(char *));
-	temp_end = ft_calloc(ft_strlen(str + j) + 1, sizeof(char *));
-	ft_memcpy(temp_begin, str, i);
-	ft_memcpy(temp_end, str + i + ft_strlen(env) + 1, ft_strlen(str + j));
-	node = ft_getenv(env, env_list);
-	if (node)
-		new_env = node->value;
+	if (ft_isdigit(env[0]))
+		new_str = ft_strjoin(str, env + 1);
+	else if (ft_getenv(env, env_list))
+	{
+		new_env = ft_getenv(env, env_list)->value;
+		new_str = ft_strjoin(str, new_env);
+	}
 	else
-		new_env = ft_calloc(1, sizeof(char *));
-	free (str);
-	str = ft_strjoin(temp_begin, new_env);
-	str = ft_strjoin(str, temp_end);
-	free(temp_begin);
-	free(temp_end);
-	// if (new_env)
-	// 	free(new_env);
+		new_str = ft_strjoin(str, "\0");
+	if (end_str != NULL)
+	{
+		temp = new_str;
+		new_str = ft_strjoin(new_str, end_str);
+		free(temp);
+	}
 	free(env);
-	return (str);
+	free(str);
+	return (new_str);
 }
 
 t_env_list	*ft_getenv(char *env, t_env_list *env_list)

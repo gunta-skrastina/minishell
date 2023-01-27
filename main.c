@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/23 13:34:18 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/27 19:38:00 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char *argv[], char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGINT, handle_signals);
 		str = readline("> ");
-		if(!str)
+		if (!str)
 		{
 			free(str);
 			free_env_list(env_list);
@@ -37,14 +37,13 @@ int	main(int argc, char *argv[], char **envp)
 		}
 		if (ft_strlen(str) > 0)
 			add_history(str);
-		str = replace(str, -1, env_list);
-		if (str)
-		{
-			if (str[ft_strlen(str) - 1] == '|' || str[0] == '|')
-				printf("minishell: parse error near `|'\n");
-			else if (validate_quotes(str) < 0)
-				printf("minishell: parse error near quotes\n");
-			else
+		if (str[ft_strlen(str) - 1] == '|' || str[0] == '|')
+			printf("minishell: parse error near `|'\n");
+		else if (validate_quotes(str) < 0)
+			printf("minishell: parse error near quotes\n");
+		else
+			str = replace(str, -1, env_list);
+			if (str)
 			{
 				cmd = parse(str);
 				// execution
@@ -52,7 +51,6 @@ int	main(int argc, char *argv[], char **envp)
 				if (cmd != NULL)
 					free_cmd(cmd);
 			}
-		}
 		free(str);
 	}
 	return (0);

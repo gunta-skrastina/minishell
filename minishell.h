@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/23 15:44:02 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:08:11 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ typedef struct s_cmd
 }					t_cmd;
 
 char		*replace(char *str, int i, t_env_list *env_list);
-char		*replace_env(char *str, int i, char quote, t_env_list *env_list);
+char		*replace_env(char *str, int i, t_env_list *env_list);
 int			ft_charcmp(const char *str, char c);
-char		*ft_new_str(char *str, int i, int j, char *env, t_env_list *env_list);
+char		*ft_new_str(char *str, char *env, char *end_str, t_env_list *env_list);
 void		handle_signals(int sig);
 t_env_list	*ft_env_lstnew(char *name, char *value);
 t_env_list	*ft_env_lstlast(t_env_list *lst);

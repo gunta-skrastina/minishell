@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:18:49 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/15 15:10:23 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 00:24:59 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,14 @@ void	cd(char *path, t_env_list *env_list)
 	}
 	if (path && path[0])
 	{
-		i = chdir(path);
-		replace_pwd(env_list);
+		i = replace_pwd(env_list, path);
 	}
 	else
 	{
 		if (ft_getenv("HOME", env_list))
 		{
 			path = ft_getenv("HOME", env_list)->value;
-			i = chdir(path);
-			replace_pwd(env_list);
+			i = replace_pwd(env_list, path);
 		}
 		else
 			ft_error("cd", NULL, "HOME not set");
@@ -43,13 +41,16 @@ void	cd(char *path, t_env_list *env_list)
 		ft_error("cd", path, "No such file or directory");
 }
 
-void	replace_pwd(t_env_list *env_list)
+int	replace_pwd(t_env_list *env_list, char *path)
 {
 	char	*pwd;
+	int		i;
 
+	i = chdir(path);
 	pwd = ft_getenv("PWD", env_list)->value;
 	free(ft_getenv("OLDPWD", env_list)->value);
 	ft_getenv("OLDPWD", env_list)->value = pwd;
 	pwd = getcwd(NULL, 0);
 	ft_getenv("PWD", env_list)->value = pwd;
+	return (i);
 }

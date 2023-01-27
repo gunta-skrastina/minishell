@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/27 23:31:14 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 00:10:29 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ t_cmd	*parse_vars(t_cmd *cmd)
 	while (temp && temp->cmd)
 	{
 		i = 0;
+		while (temp->cmd[i] == 32)
+			i++;
 		while (temp->cmd[i] && temp->cmd[i] != 32)
 		{
 			if (temp->cmd[i] == '"' || temp->cmd[i] == '\'')

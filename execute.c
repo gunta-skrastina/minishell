@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/27 20:21:50 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 03:01:14 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,15 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 {
 	pid_t	pid;
 	int		i;
-	char	*argv[3];
+	char	**argv;
+	char	*str;
+	char	*temp;
 
-	argv[0] = cmd->cmd;
-	argv[1] = NULL;
-	if (cmd->vars[0])
-		argv[1] = cmd->vars;
-	argv[2] = NULL;
+	str = ft_strjoin(cmd->cmd, " ");
+	temp = str;
+	str = ft_strjoin(str, cmd->vars);
+	free(temp);
+	argv = ft_split(str, 32);
 	i = access(cmd->cmd, X_OK);
 	if (i == -1 && ft_getenv("PATH", env) != NULL)
 		argv[0] = find_path(argv[0], env);
@@ -60,8 +62,8 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 			execve(argv[0], argv, NULL);
 		else
 			wait(NULL);
-		if (i)
-			free(argv[0]);
+		ft_free_split(argv, 0);
+		free(str);
 		return (0);
 	}
 	return (-1);
@@ -93,5 +95,6 @@ char	*find_path(char *cmd, t_env_list *env)
 	ft_free_split(path, 0);
 	if (i == -1)
 		return (NULL);
+	free(just_cmd);
 	return (cmd);
 }

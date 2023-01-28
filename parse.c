@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:14:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 00:10:29 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 15:52:19 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ t_cmd	*parse_vars(t_cmd *cmd)
 				i += ft_charcmp(temp->cmd + i + 1, temp->cmd[i]) + 1;
 			i++;
 		}
-		if (!temp->cmd[i])
-			temp->vars = ft_calloc(1, sizeof(char *));
-		else if (temp->cmd + i + 1)
+		if (temp->cmd + i + 1)
 			temp->vars = temp->cmd + i + 1;
 		temp->cmd[i] = '\0';
 		temp = temp->next;

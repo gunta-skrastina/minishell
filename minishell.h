@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 00:37:23 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 18:07:54 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+
+int	g_err;
 
 typedef struct s_env_list
 {
@@ -85,6 +87,7 @@ int			execute_path(t_cmd *cmd, t_env_list *env);
 char		*find_path(char *cmd, t_env_list *env);
 void		export_add(t_env_list *env, char *vars);
 void		rl_replace_line(const char *text, int clear_undo);
+char		*dollar_question(char *str, int i);
 
 
 void		ft_free_split(char **s, int i);

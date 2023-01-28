@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/27 20:11:26 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 18:03:42 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char	*replace(char *str, int i, t_env_list *env_list)
 
 	while (str[++i])
 	{
+		if (str[i] == '$' && str[i + 1] == '?')
+			str = dollar_question(str, i);
 		if (str[i] == '$' && str[i + 1] && str[i + 1] == 32)
 			i++;
 		if (ft_charcmp(str + i, '$') < 0)
@@ -49,12 +51,11 @@ char	*replace(char *str, int i, t_env_list *env_list)
 		else if ((str[i] == '\'' || str[i] == '"')
 			&& ft_charcmp(str + i + 1, str[i]) >= 0)
 		{
-			quote = str[i++];
-			while (str[i] && str[i] != quote && str[i + 1] != '\0')
+			quote = str[i];
+			while (str[++i] && str[i] != quote && str[i + 1] != '\0')
 			{
 				if (str[i] == '$' && quote == '"' && str[i + 1] != 32)
 					str = replace_env(str, i, env_list);
-				i++;
 			}
 		}
 		str = replace(str, i, env_list);
@@ -115,14 +116,27 @@ char	*ft_new_str(char *str, char *env, char *end_str, t_env_list *env_list)
 	return (new_str);
 }
 
-t_env_list	*ft_getenv(char *env, t_env_list *env_list)
+char	*dollar_question(char *str, int i)
 {
-	while (env_list)
+	char	*str_beg;
+	char	*str_end;
+	char	*temp;
+	char	*exit_code;
+
+	exit_code = ft_itoa(g_err);
+	str_beg = str;
+	str_end = NULL;
+	if (str[i + 2] != '\0')
+		str_end = str + i + 2;
+	str[i] = '\0';
+	str = ft_strjoin(str_beg, exit_code);
+	if (str_end != NULL)
 	{
-		if (!ft_strncmp(env, env_list->name, ft_strlen(env))
-			&& ft_strlen(env) == ft_strlen(env_list->name))
-			return (env_list);
-		env_list = env_list->next;
+		temp = str;
+		str = ft_strjoin(str, str_end);
+		free(temp);
 	}
-	return (NULL);
+	free(str_beg);
+	free(exit_code);
+	return (str);
 }

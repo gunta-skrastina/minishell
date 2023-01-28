@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 15:09:21 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 18:08:38 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	execute_builtins(t_cmd *cmd, t_env_list *env_list)
 {
+	g_err = 0;
 	if (!ft_strncmp(cmd->cmd, "echo", 4) && ft_strlen(cmd->cmd) == 4)
 		echo(cmd->vars);
 	else if (!ft_strncmp(cmd->cmd, "cd", 2) && ft_strlen(cmd->cmd) == 2)
@@ -33,7 +34,10 @@ int	execute_builtins(t_cmd *cmd, t_env_list *env_list)
 	else if (!execute_path(cmd, env_list))
 		;
 	else
+	{
 		printf("minishell: %s: command not found\n", cmd->cmd);
+		g_err = 127;
+	}
 	return (0);
 }
 
@@ -46,9 +50,12 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 	char	*temp;
 
 	str = ft_strjoin(cmd->cmd, " ");
-	temp = str;
-	str = ft_strjoin(str, cmd->vars);
-	free(temp);
+	if (str != NULL)
+	{
+		temp = str;
+		str = ft_strjoin(str, cmd->vars);
+		free(temp);
+	}
 	argv = ft_split(str, 32);
 	i = access(cmd->cmd, X_OK);
 	if (i == -1 && ft_getenv("PATH", env) != NULL)

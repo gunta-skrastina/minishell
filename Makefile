@@ -1,14 +1,14 @@
 # _*_ MakeFile _*_
 
 CC = gcc
-READLINE=-I $(HOME)/goinfre/.brew/opt/readline/include/ -L $(HOME)/goinfre/.brew/opt/readline/lib/ -lreadline
+READLINE= -I $(HOME)/goinfre/.brew/opt/readline/include/ -L $(HOME)/goinfre/.brew/opt/readline/lib/ -lreadline
 CFLAGS = -Wextra -Wall -Werror
 LIBFT = libft.a
 NAME = minishell
 
 SRCS = main.c utils.c replace_env.c signals.c env.c env_list_utils.c pwd.c unset.c \
-	export.c cd.c error.c split_env.c execute.c parse.c cmd_utils.c echo.c exit.c \
-	parse_utils.c add_inout.c
+	export.c cd.c error.c split_env.c execute.c parse.c cmd_list_utils.c echo.c exit.c \
+	parse_utils.c add_inout.c cmd_utils.c parce_inout.c pipe_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

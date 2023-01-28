@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 18:08:38 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 19:02:49 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,19 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 	char	*temp;
 
 	str = ft_strjoin(cmd->cmd, " ");
-	if (str != NULL)
+	if (cmd->vars != NULL)
 	{
 		temp = str;
 		str = ft_strjoin(str, cmd->vars);
 		free(temp);
+		argv = ft_split(str, 32);
 	}
-	argv = ft_split(str, 32);
+	else
+	{
+		argv = NULL;
+		argv[0] = cmd->cmd;
+		argv[1] = NULL;
+	}
 	i = access(cmd->cmd, X_OK);
 	if (i == -1 && ft_getenv("PATH", env) != NULL)
 		argv[0] = find_path(argv[0], env);
@@ -66,7 +72,12 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 		if (pid == -1)
 			return (-1);
 		if (pid == 0)
-			execve(argv[0], argv, NULL);
+		{
+			if ((!cmd->in || !cmd->in[0]) && (!cmd->out || !cmd->out[0].name))
+				execve(argv[0], argv, NULL);
+			else
+				ft_redirect(cmd, argv);
+		}
 		else
 			wait(NULL);
 		ft_free_split(argv, 0);
@@ -106,4 +117,17 @@ char	*find_path(char *cmd, t_env_list *env)
 	if (i == -1)
 		return (NULL);
 	return (cmd);
+}
+
+void	ft_redirect(t_cmd *cmd, char **argv)
+{
+	int	fd_in;
+	int	fd_out;
+
+	if (ft_invalidation(cmd, &fd_in, cmd->in) < 0)
+		return ;
+    if (ft_outvalidation(cmd, &fd_out) < 0)
+        return ;
+	execve(argv[0], argv, NULL);
+	return ;
 }

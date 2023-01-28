@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
+/*   By: htoustsi <htoustsi@student.42wolfsburg.de> +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 22:39:05 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 00:17:07 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 16:40:11 by htoustsi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

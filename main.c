@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:02:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 18:07:16 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 00:35:52 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ int	main(int argc, char *argv[], char **envp)
 		{
 			cmd = parse(str);
 			// execution
-			execute_builtins(cmd, env_list);
+			if (ft_charcmp(str, '|') == -1)
+				execute_builtins(cmd, env_list);
+			else
+				ft_parce_cmd(cmd, env_list);
 			if (cmd != NULL)
 				free_cmd(cmd);
 		}

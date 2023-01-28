@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 14:03:28 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 18:07:54 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 18:55:03 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft/libft.h"
 # include <stdio.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
@@ -96,4 +97,14 @@ int			ft_add_in(t_cmd *cmd);
 int			ft_add_out(t_cmd *cmd);
 void		ft_cut_filename(char **s, int pos, int num);
 
+char	*ft_readline_fd(int fd);
+void	ft_getline_cmd(int pip[2], char *limiter);
+void	ft_cmd_exec(t_cmd *cmd, int in_fd, int out_fd, t_env_list *env_list);
+void	ft_create_fork(int pip1[2], int pip2[2], t_cmd *cmd, t_env_list *env_list);
+void	ft_pipe(t_cmd *cmd, int pip1[2], int fd[2], t_env_list *env_list);
+int	ft_invalidation(t_cmd *cmd, int *fd, char **infiles);
+int ft_outvalidation(t_cmd *cmd, int *fd);
+int	ft_parce_cmd(t_cmd *cmd, t_env_list *env_list);
+
+void	ft_redirect(t_cmd *cmd, char **argv);
 #endif

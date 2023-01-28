@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 18:03:42 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 18:57:15 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*replace(char *str, int i, t_env_list *env_list)
 
 	while (str[++i])
 	{
-		if (str[i] == '$' && str[i + 1] == '?')
+		if (str[i] == '$' && str[i] == '?')
 			str = dollar_question(str, i);
 		if (str[i] == '$' && str[i + 1] && str[i + 1] == 32)
 			i++;

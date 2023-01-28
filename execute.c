@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 14:45:55 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 03:01:14 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/01/28 15:09:21 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	execute_path(t_cmd *cmd, t_env_list *env)
 		free(str);
 		return (0);
 	}
+	ft_free_split(argv, 0);
+	free(str);
 	return (-1);
 }
 
@@ -93,8 +95,8 @@ char	*find_path(char *cmd, t_env_list *env)
 		j++;
 	}
 	ft_free_split(path, 0);
+	free(just_cmd);
 	if (i == -1)
 		return (NULL);
-	free(just_cmd);
 	return (cmd);
 }

@@ -8,7 +8,8 @@ NAME = minishell
 
 SRCS = main.c utils.c replace_env.c signals.c env.c env_list_utils.c pwd.c unset.c \
 	export.c cd.c error.c split_env.c execute.c parse.c cmd_list_utils.c echo.c exit.c \
-	parse_utils.c add_inout.c cmd_utils.c parce_inout.c pipe_utils.c
+	parse_utils.c add_inout.c lim_utils.c parse_inout.c pipe.c pipe_utils.c syntax.c \
+	add_inout_utils.c execute_utils.c export_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

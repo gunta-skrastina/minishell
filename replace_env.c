@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 19:17:42 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 18:57:15 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/02/05 10:36:07 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,29 @@
 
 t_env_list	*init_env_list(char **envp)
 {
-	t_env_list	*env_list;
+	t_env_list	*env;
 	int			i;
-	char		**var;		
+	char		**var;	
+	int			shlvl;	
 
 	i = 0;
-	env_list = NULL;
+	env = NULL;
 	while (envp[i])
 	{
 		var = split_env(envp[i], '=');
-		ft_env_lstadd_back(&env_list, ft_env_lstnew(var[0], var[1]));
+		if (!ft_strncmp(var[0], "SHLVL", 5) && ft_strlen(var[0]) == 5)
+		{
+			shlvl = ft_atoi(var[1]) + 1;
+			ft_env_lstadd_back(&env, ft_env_lstnew(var[0], ft_itoa(shlvl)));
+			free(var[1]);
+		}
+		else
+			ft_env_lstadd_back(&env, ft_env_lstnew(var[0], var[1]));
 		i++;
 		if (var)
-		{
 			free(var);
-			var = NULL;
-		}
 	}
-	return (env_list);
+	return (env);
 }
 
 char	*replace(char *str, int i, t_env_list *env_list)
@@ -40,9 +45,8 @@ char	*replace(char *str, int i, t_env_list *env_list)
 
 	while (str[++i])
 	{
-		if (str[i] == '$' && str[i] == '?')
-			str = dollar_question(str, i);
-		if (str[i] == '$' && str[i + 1] && str[i + 1] == 32)
+		if (str[i] == '$' && str[i + 1] && ((str[i + 1] == 32)
+				|| (str[i + 1] == ':') || (str[i + 1] == '=')))
 			i++;
 		if (ft_charcmp(str + i, '$') < 0)
 			return (str);
@@ -54,7 +58,8 @@ char	*replace(char *str, int i, t_env_list *env_list)
 			quote = str[i];
 			while (str[++i] && str[i] != quote && str[i + 1] != '\0')
 			{
-				if (str[i] == '$' && quote == '"' && str[i + 1] != 32)
+				if (str[i] == '$' && quote == '"' && str[i + 1] != 32
+					&& str[i + 1] != quote)
 					str = replace_env(str, i, env_list);
 			}
 		}
@@ -71,6 +76,8 @@ char	*replace_env(char *str, int i, t_env_list *env_list)
 	char	*end_str;
 
 	j = 0;
+	if (str[i + 1] == '?')
+		return (dollar_question(str, i));
 	str[i++] = '\0';
 	env = str + i;
 	end_str = NULL;
@@ -124,6 +131,8 @@ char	*dollar_question(char *str, int i)
 	char	*exit_code;
 
 	exit_code = ft_itoa(g_err);
+	if (exit_code < 0)
+		exit_code += 128;
 	str_beg = str;
 	str_end = NULL;
 	if (str[i + 2] != '\0')

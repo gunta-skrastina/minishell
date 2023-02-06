@@ -3,48 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   add_inout.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htoustsi <htoustsi@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 00:46:46 by htoustsi          #+#    #+#             */
-/*   Updated: 2023/01/28 16:44:34 by htoustsi         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
+/*   Updated: 2023/02/04 18:54:18 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_free_split(char **s, int i)
-{
-	while (s[i])
-	{
-		free(s[i]);
-		++i;
-	}
-	free(s);
-}
-
-size_t	ft_numwords(const char *s, char c)
-{
-	size_t	nwords;
-	size_t	count;
-
-	nwords = 0;
-	count = 0;
-	while ((s[count]) && (s[count] != '\0') && (s[count] != '\n'))
-	{
-		if ((s[count] != c) && ((s[count + 1] == '\0')
-				|| (s[count + 1] == c) || (s[count + 1] == '\n')))
-			++nwords;
-		++count;
-	}
-	return (nwords);
-}
-
 void	ft_cut_filename(char **s, int pos, int num)
 {
-	while ((*s)[pos] && (*s)[pos + num] && (*s)[pos] != '\0' && (*s)[pos + num] != '\0')
+	while ((*s)[pos] && (*s)[pos + num]
+		&& (*s)[pos] != '\0' && (*s)[pos + num] != '\0')
 	{
 		(*s)[pos] = (*s)[pos + num];
 		++pos;
@@ -60,93 +31,98 @@ void	ft_cut_filename(char **s, int pos, int num)
 	return ;
 }
 
-int	ft_add_in(t_cmd *cmd)
+int	ft_process_splitin(t_cmd *cmd, int *pos_in, int i, int cut_start)
 {
-	int		i;
+	char	*temp;
 	int		len;
-	int		cut_start;
-	int		pos_in;
-	char	**temp;
 
-    while (cmd && cmd->cmd)
-    {
-        len = ft_numwords(cmd->cmd, '<');
-        cmd->in = (char **)malloc(sizeof(char *) * len);
-        if (!cmd->in)
-            return (0);
-        pos_in = 0;
-        cmd->here_doc = 0;
-        i = ft_charcmp(cmd->cmd, '<');
-        while (i != -1)
-        {
-            cut_start = i;
-            if (cmd->cmd[i + 1] == '<')
-            {
-                cmd->here_doc = 1;
-                //cut out the limiter and store it
-                i = i + 2;
-            }
-            else
-            {
-                while (cmd->cmd[i + 1] == ' ')
-                    ++i;
-                temp = ft_split(&(cmd->cmd[i + 1]), ' ');
-                cmd->in[pos_in] = temp[0];
-                if (!temp[1])
-                    free(temp);
-                else
-                    ft_free_split(temp, 1);
-                ft_cut_filename(&(cmd->cmd), cut_start, i + 1 + ft_strlen(cmd->in[pos_in]) - cut_start);
-//                printf("cut in result: %s; %s\n", cmd->cmd, cmd->in[0]);
-                ++pos_in;
-            }
-            i = ft_charcmp(cmd->cmd, '<');
-        }
-        cmd = cmd->next;
-    }
-    return (1);
+	while (cmd->cmd[i + 1] == ' ')
+		++i;
+	temp = split_inout(&(cmd->cmd[i + 1]));
+	len = ft_strlen(temp);
+	if (pos_in == NULL)
+	{
+		cmd->lim.name = temp;
+		cmd->lim.num = ft_num_infiles(cmd) - 1;
+	}
+	else
+	{
+		cmd->in[*pos_in] = temp;
+		*pos_in = *pos_in + 1;
+	}
+	ft_cut_filename(&(cmd->cmd), cut_start,
+		i + 1 + len - cut_start);
+	return (i);
 }
 
-int	ft_add_out(t_cmd *cmd)
+int	ft_process_splitout(t_cmd *cmd, int *pos_out, int i, int cut_start)
 {
-	int		i;
 	int		len;
-	int		cut_start;
-	int		pos_out;
-	char	**temp;
 
-    while (cmd && cmd->cmd)
-    {
-        len = ft_numwords(cmd->cmd, '>');
-        cmd->out = (t_out *)malloc(sizeof(t_out) * len);
-        if (!cmd->out)
-            return (0);
-        pos_out = 0;
-        i = ft_charcmp(cmd->cmd, '>');
-        while (i != -1)
-        {
-            cut_start = i;
-            cmd->out->num = 0;
-            if (cmd->cmd[i + 1] == '>')
-            {
-                cmd->out->num = 1;
-                ++i;
-            }
-            while (cmd->cmd[i + 1] == ' ')
-                    ++i;
-            temp = ft_split(&(cmd->cmd[i + 1]), ' ');
-            (cmd->out[pos_out]).name = temp[0];
-            if (temp[1])
-                ft_free_split(temp, 1);
-            else
-                free(temp);
-            ft_cut_filename(&(cmd->cmd), cut_start - cmd->out->num, i + 1 + ft_strlen(cmd->out[pos_out].name) - cut_start);
-//            printf("cut out result: %s; %s\n", cmd->cmd, cmd->out[0].name);
-            ++pos_out;
-            ++i;
-            i = ft_charcmp(cmd->cmd, '>');
-        }
-        cmd = cmd->next;
-    }
-    return (1);
+	while (cmd->cmd[i + 1] == ' ')
+		++i;
+	cmd->out[*pos_out].name = split_inout(&(cmd->cmd[i + 1]));
+	len = ft_strlen(cmd->out[*pos_out].name);
+	ft_cut_filename(&(cmd->cmd), cut_start - (cmd->out[*pos_out]).num,
+		i + 1 + (cmd->out[*pos_out]).num + len - cut_start);
+	*pos_out = (*pos_out) + 1;
+	return (i);
+}
+
+int	ft_add_in(t_cmd *cmd, int cut_start, int pos_in)
+{
+	int	i;
+
+	while (cmd && cmd->cmd)
+	{
+		cmd->in = ft_calloc(ft_numwords(cmd->cmd, '<') + 1, sizeof(t_out));
+		if (!cmd->in)
+			return (0);
+		cmd->here_doc = 0;
+		pos_in = 0;
+		i = ft_charcmp_quotes(cmd->cmd, '<');
+		while (i != -1)
+		{
+			cut_start = i;
+			if (cmd->cmd[i + 1] == '<')
+			{
+				cmd->here_doc = 1;
+				i = ft_process_splitin(cmd, NULL, i + 1, cut_start) + 2;
+			}
+			else
+				i = ft_process_splitin(cmd, &pos_in, i, cut_start);
+			i = ft_charcmp_quotes(cmd->cmd, '<');
+		}
+		cmd = cmd->next;
+	}
+	return (1);
+}
+
+int	ft_add_out(t_cmd *cmd, int cut_start, int pos_out)
+{
+	int	i;
+
+	while (cmd && cmd->cmd)
+	{
+		cmd->out = ft_calloc(ft_numwords(cmd->cmd, '>') * 3, sizeof(t_out *));
+		if (!cmd->out)
+			return (0);
+		pos_out = 0;
+		i = ft_charcmp_quotes(cmd->cmd, '>');
+		while (i != -1)
+		{
+			cut_start = i;
+			cmd->out[pos_out].num = 0;
+			if (cmd->cmd[i + 1] == '>')
+			{
+				cmd->out[pos_out].num = 1;
+				cut_start += 1;
+				++i;
+			}
+			i = ft_process_splitout(cmd, &pos_out, i, cut_start) + 1;
+			i = ft_charcmp_quotes(cmd->cmd, '>');
+		}
+		cmd = cmd->next;
+	}
+	return (1);
 }

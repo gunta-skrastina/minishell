@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htoustsi <htoustsi@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: htoustsi <htoustsi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/14 20:53:54 by htoustsi          #+#    #+#             */
-/*   Updated: 2023/01/24 23:12:10 by htoustsi         ###   ########.fr       */
+/*   Created: 2023/02/05 11:21:45 by htoustsi          #+#    #+#             */
+/*   Updated: 2023/02/05 18:40:14 by htoustsi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_create_fork(int pip1[2], int pip2[2], t_cmd *cmd, t_env_list *env_list)
-{
+void	ft_lim_inchild(int pip[2], t_cmd *cmd)
+{		
 	int	proc;
 
 	proc = fork();
@@ -21,62 +21,73 @@ void	ft_create_fork(int pip1[2], int pip2[2], t_cmd *cmd, t_env_list *env_list)
 		perror("Forking error");
 	else if (proc == 0)
 	{
-		if (pip1[1] && pip1[1] != STDOUT_FILENO)
-			close(pip1[1]);
-		if (pip2[0] && pip2[0] != STDIN_FILENO)
-			close(pip2[0]);
-		ft_cmd_exec(cmd, pip1[0], pip2[1], env_list);
+		close(pip[0]);
+		ft_collect_topipe(pip, cmd);
+		close(pip[1]);
+		exit(0);
 	}
+	wait(NULL);
 	return ;
 }
 
-void	ft_pipe(t_cmd *cmd, int pip1[2], int fd[2], t_env_list *env_list)
+void	ft_first_pipe(t_cmd *cmd, t_env_list *env, int pip[2])
 {
-	int	pip2[2];
-//	int	count;
-
-//	count = 1;
-//	if (argv[0][0] == 'h')
-//		count = 2;
-//	while (count < (argc - 2))
-	while (cmd && cmd->cmd)
+	close(pip[0]);
+	if (cmd && cmd->here_doc)
+		ft_lim_inchild(pip, cmd);
+	if (cmd && cmd->next && ((cmd->next)->cmd[0] != '\0'
+			|| (cmd->next)->in || (cmd->next)->here_doc || (cmd->next)->out))
 	{
-		pipe(pip2);
-		ft_create_fork(pip1, pip2, cmd, env_list);
-		if (pip2[0] && pip2[0] != STDIN_FILENO)
+		if (dup2(pip[1], STDOUT_FILENO) < 0)
 		{
-			close(pip1[0]);
-			if (dup2(pip2[0], pip1[0]) < 0)
-			{
-				perror("Pipes duplication error");
-				exit(0);
-			}
+			perror("Output duplication error");
+			exit(0);
 		}
-		if (pip1[1] && pip1[1] != STDOUT_FILENO)
-		{
-			close(pip1[1]);
-			if (dup2(pip2[1], pip1[1]) < 0)
-			{
-				perror("Pipes duplication error");
-				exit(0);
-			}
-		}
-//		if ((dup2(pip2[0], pip1[0]) < 0) || (dup2(pip2[1], pip1[1]) < 0))
-//		{
-//			perror("Pipes duplication error");
-//			exit(0);
-//		}
-//		if (pip2[0] && pip2[0] != STDIN_FILENO)
-		close(pip2[0]);
-//		if (pip2[1] && pip2[1] != STDOUT_FILENO)
-		close(pip2[1]);
-		wait(NULL);
-//		++count;
-		cmd = cmd->next;
 	}
-	ft_create_fork(pip1, fd, cmd, env_list);
-//	if (pip1[0] && pip1[0] != STDIN_FILENO)
-		close(pip1[0]);
-//	if (pip1[1] && pip1[1] != STDOUT_FILENO)
-		close(pip1[1]);
+	execute_builtins(cmd, env);
+	close(pip[1]);
+	exit(0);
+	return ;
+}
+
+void	ft_last_pipe(t_cmd *cmd, t_env_list *env, int pip[2])
+{
+	if (dup2(pip[0], STDIN_FILENO) < 0)
+	{
+		perror("Input duplication error");
+		exit(0);
+	}
+	execute_builtins(cmd, env);
+	close(pip[0]);
+	exit(0);
+	return ;
+}
+
+void	ft_middle_pipe(t_cmd *cmd, t_env_list *env, int pip[2], int pip2[2])
+{
+	close(pip[1]);
+	if (dup2(pip[0], STDIN_FILENO) < 0)
+	{
+		perror("Input duplication error");
+		exit(0);
+	}
+	if (cmd && cmd->here_doc)
+		ft_lim_inchild(pip2, cmd);
+	close(pip2[0]);
+	if (dup2(pip2[1], STDOUT_FILENO) < 0)
+	{
+		perror("Output duplication error");
+		exit(0);
+	}
+	if (g_err == 130)
+	{
+		close(pip2[1]);
+		exit(0);
+	}
+	execute_builtins(cmd, env);
+	close(pip[0]);
+	close(pip[1]);
+	close(pip2[1]);
+	exit(0);
+	return ;
 }

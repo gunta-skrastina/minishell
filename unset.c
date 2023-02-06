@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:09:08 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/24 14:19:27 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/02/04 21:48:23 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,23 @@
 static void	free_env_node(t_env_list *env);
 static void	find_node(t_env_list *env_list, char *split);
 
-void	unset(t_env_list *env_list, char *vars)
+int	unset(t_env_list *env_list, char *vars, t_cmd *cmd, int fd_out)
 {
 	char		**split;
 	int			i;
 	t_env_list	*head;
 
+	if (ft_in_validation(cmd, &fd_out, cmd->in) < 0)
+		return (1);
+	if (fd_out != STDIN_FILENO)
+		close(fd_out);
+	if (ft_out_validation(cmd, &fd_out) < 0)
+		return (1);
+	if (fd_out != STDOUT_FILENO)
+		close(fd_out);
 	i = 0;
+	if (!vars)
+		return (0);
 	split = ft_split(vars, 32);
 	head = env_list;
 	while (split[i])
@@ -31,6 +41,7 @@ void	unset(t_env_list *env_list, char *vars)
 		i++;
 	}
 	ft_free_split(split, 0);
+	return (0);
 }
 
 static void	free_env_node(t_env_list *env)

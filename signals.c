@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htoustsi <htoustsi@student.42wolfsburg.de> +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/01 23:27:58 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 16:41:15 by htoustsi         ###   ########.fr       */
+/*   Updated: 2023/02/02 13:31:04 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 void	handle_signals(int sig)
 {
+	g_err = sig + 128;
 	if (sig == SIGINT)
 	{
-		printf("\n");
-//		rl_on_new_line();
-//		rl_replace_line("", 1);
-		rl_redisplay();
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
 	}
+	if (sig == SIGQUIT)
+		signal(sig, SIG_IGN);
 }

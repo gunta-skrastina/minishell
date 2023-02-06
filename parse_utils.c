@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 15:14:34 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/28 00:09:35 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/02/05 00:02:10 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*remove_spaces(char *str)
 	if (!new_str)
 		return (NULL);
 	new_str = rm_sp(str, new_str, i);
+	if (new_str[ft_strlen(new_str) - 1] == 32)
+		new_str[ft_strlen(new_str) - 1] = '\0';
 	return (new_str);
 }
 
@@ -47,7 +49,7 @@ static char	*rm_sp(char *str, char *new_str, size_t i)
 		}
 		else if (str[i] == 32 && str[i + 1] == 32)
 		{
-			new_str[j] = str[i];
+			new_str[j++] = str[i];
 			i++;
 			while (str[i] == 32)
 				i++;
@@ -58,4 +60,17 @@ static char	*rm_sp(char *str, char *new_str, size_t i)
 			new_str[j++] = str[i++];
 	}
 	return (new_str);
+}
+
+void	replace_tabs(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\t')
+			str[i] = 32;
+		i++;
+	}
 }

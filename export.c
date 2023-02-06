@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 17:58:57 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/01/21 04:58:56 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/02/05 13:18:10 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,33 +15,33 @@
 static void	sort(t_env_list *env, int size);
 static void	zero_num(t_env_list *env);
 
-void	export(t_env_list *env, char *vars)
+int	export(t_cmd *cmd, t_env_list *env, char *vars, int proc)
 {
-	int			i;
 	int			size;
-	t_env_list	*head;
+	int			fd_out;
 
+	if (ft_in_validation(cmd, &fd_out, cmd->in) < 0)
+		return (1);
+	if (fd_out != STDIN_FILENO)
+		close(fd_out);
 	if (!vars || !vars[0])
 	{
-		i = 1;
-		head = env;
 		size = ft_env_lstsize(env);
 		sort(env, size);
-		while (size >= i)
-		{
-			if (env->num == i)
-			{
-				printf("declare -x %s=\"%s\"\n", env->name, env->value);
-				i++;
-			}
-			if (env->next)
-				env = env->next;
-			else
-				env = head;
-		}
+		proc = fork();
+		if (proc == 0)
+			ft_file_export(size, env, cmd);
+		wait(NULL);
 	}
 	else
+	{
+		if (ft_out_validation(cmd, &fd_out) < 0)
+			return (1);
+		if (fd_out != STDOUT_FILENO)
+			close(fd_out);
 		export_add(env, vars);
+	}
+	return (0);
 }
 
 static void	sort(t_env_list *env, int size)
@@ -101,14 +101,21 @@ void	export_add(t_env_list *env, char *vars)
 {
 	int		i;
 	char	**split;
+	char	*temp;
 
+	i = -1;
+	temp = ft_strjoin(vars, "\0");
+	split = split_argv(temp);
+	while (split[++i])
+		split[i] = without_quotes(split[i]);
 	i = 0;
-	split = ft_split(vars, 32);
 	while (split[i])
 	{
-		if (split[i][0] == '=' || ft_isdigit(split[i][0]))
+		if (check_if_valid_env(split[i]) == -1 || split[i][0] == '=')
 			printf("minishell: %s: `%s\': %s\n",
 				"export", split[i], "not a valid identifier");
+		else if (ft_charcmp(split[i], '=') == -1)
+			;
 		else
 			export_env(env, split[i]);
 		free(split[i]);
